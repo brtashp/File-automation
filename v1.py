@@ -6,6 +6,7 @@ import os
 
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
+print(excel_df)
 
 folder_name = 'Files'
 # below function is used to get the absolute path to a folder (defines the path)
@@ -53,3 +54,7 @@ cleaned_names_df = pd.DataFrame(cleaned_file_names)
 # comparing to make sure correct file was renamed)
 cleaned_names_df['File Name'] = files_in_folder
 print(cleaned_names_df)
+
+# now that we have the file names 'searchable'
+# lets work on the part that compares to excel df so we can find the unumber and rename the file
+
