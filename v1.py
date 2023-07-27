@@ -2,6 +2,7 @@
 # import libraries
 import pandas as pd
 import os
+import re
 
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
@@ -26,24 +27,22 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 # then ingore/move the file to the 'Need to be renamed' folder or something?
 
 print(files_in_folder[1])
-file_names = files_in_folder[1]
 
-def extract_names(file_names):
-    parts = file_names.split(" - ")
-    print(type(parts))
-    if len(parts) == 2:
-        names = parts[1].split()
-        print(type(names))
-        print(names)
-        if len(names == 2):
-            name1, name2 = names
-        else:
-            name1, name2 = names[0], None
-    else:
-        name1, name2 = None, None
-    
-    return name1, name2
+file_name = files_in_folder[1]
+pattern = r' - (.+)\.pdf'
 
-name1, name2 = extract_names(file_names)
+match = re.search(pattern, file_name) 
 
-print(name1, name2)
+if match:
+    names_text = match.group(1)
+
+    names = names_text.split()
+
+    name1 = names[0]
+    name2 = names[1]
+
+    print("Name 1:", name1)
+    print("Name 2:", name2)
+
+else:
+    print("No names found")
