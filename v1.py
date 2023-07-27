@@ -26,10 +26,7 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 # then repeat the above steps but with the second string, and if there is no second string 
 # then ingore/move the file to the 'Need to be renamed' folder or something?
 
-#print(files_in_folder[1])
-
-#file_name = files_in_folder[1]
-
+# create df to store the output of the named file 
 cleaned_file_names = []
 
 for file_name in files_in_folder:
@@ -53,13 +50,14 @@ for file_name in files_in_folder:
             entry = {"Name1": name1, "Name2": name2}
             cleaned_file_names.append(entry)
 
-            #print("Name 1:", name1)
-            #print("Name 2:", name2)
-
         else:
-            print("no names after hyphen")
+            print("no after hyphen")
     else:
         print("No hyphen found")
 
 cleaned_names_df = pd.DataFrame(cleaned_file_names)
+
+# adds original file name to compare (will be useful later when 
+# comparing to make sure correct file was renamed)
+cleaned_names_df['File Name'] = files_in_folder
 print(cleaned_names_df)
