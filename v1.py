@@ -18,14 +18,6 @@ files_in_folder = os.listdir(folder_name)
 selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case sensative 
 #print(selected_df)
 
-# create the function to identify parts to remove from file name 
-# need to remove the gibberish (pleonasm) 
-# since this will also rename the file, maybe we 'remove' the gibberish, 
-# then search based on the first string found within the first column, 
-# then if we cannot find it, have it search the second column using the first string
-# then repeat the above steps but with the second string, and if there is no second string 
-# then ingore/move the file to the 'Need to be renamed' folder or something?
-
 # create df to store the output of the named file 
 cleaned_file_names = []
 
