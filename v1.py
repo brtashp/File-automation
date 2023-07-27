@@ -38,7 +38,8 @@ new_file_name = 'Whiskers, Cat UNumber.pdf'
 # below function concatenates the file name to the file path, might be where we are having issues
 old_file_path = os.path.join('Files', old_file_name)
 #print( f"old file path is {old_file_path}")
-new_file_path = os.path.join('Renamed Files', new_file_name)
+#new_file_path = os.path.join('Renamed Files', new_file_name)
+new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
 #print(f"new file path is {new_file_path}")
 
 # worked when using old_file_path rather than the name, 
