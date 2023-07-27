@@ -2,7 +2,7 @@
 # import libraries
 import pandas as pd
 import os
-import re
+#import re # library not used anymore
 
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
@@ -30,6 +30,8 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 
 #file_name = files_in_folder[1]
 
+cleaned_file_names = []
+
 for file_name in files_in_folder:
     parts = file_name.split(' - ')
 
@@ -48,11 +50,16 @@ for file_name in files_in_folder:
             if name2 and "." in name2:
                 name2, _ = name2.rsplit(".", 1)
 
-            print("Name 1:", name1)
-            print("Name 2:", name2)
+            entry = {"Name1": name1, "Name2": name2}
+            cleaned_file_names.append(entry)
+
+            #print("Name 1:", name1)
+            #print("Name 2:", name2)
 
         else:
             print("no names after hyphen")
-
     else:
         print("No hyphen found")
+
+cleaned_names_df = pd.DataFrame(cleaned_file_names)
+print(cleaned_names_df)
