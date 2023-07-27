@@ -28,21 +28,31 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 
 print(files_in_folder[1])
 
-file_name = files_in_folder[1]
-pattern = r' - (.+)\.pdf'
+#file_name = files_in_folder[1]
 
-match = re.search(pattern, file_name) 
+for file_name in files_in_folder:
+    parts = file_name.split(' - ')
 
-if match:
-    names_text = match.group(1)
+    if len(parts) == 2:
+        names_text = parts[1].strip()
+        names = names_text.split()
 
-    names = names_text.split()
+        if len(names) >= 1:
 
-    name1 = names[0]
-    name2 = names[1]
+            name1 = names[0]
+            if name1.endswith(".pdf"):
+                name1 = name1[:-4]
 
-    print("Name 1:", name1)
-    print("Name 2:", name2)
+            # Check if name2 has ".pdf" extension
+            name2 = names[1] if len(names) >= 2 else None
+            if name2 and name2.endswith(".pdf"):
+                name2 = name2[:-4]
 
-else:
-    print("No names found")
+            print("Name 1:", name1)
+            print("Name 2:", name2)
+
+        else:
+            print("no names after hyphen")
+
+    else:
+        print("No hyphen found")
