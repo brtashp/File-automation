@@ -19,6 +19,22 @@ files_in_folder = os.listdir(folder_name)
 selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case sensative 
 #print(selected_df)
 
+# only puts the three columns we need into selected df
+# need to make a function for later code (unknown spread sheets ect) 
+# defines the new dataframe 
+selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case sensative 
+#print(selected_df)
+# renaming process 
+old_file_name = files_in_folder[0]
+print(f"old file name is: {old_file_name}")
+new_file_name = 'Whiskers, Cat UNumber.pdf'
+#print(f"new file name is{new_file_name}")
+# below function concatenates the file name to the file path, might be where we are having issues
+old_file_path = os.path.join('Files', old_file_name)
+#print( f"old file path is {old_file_path}")
+new_file_path = os.path.join('Renamed Files', new_file_name)
+#print(f"new file path is {new_file_path}")
+
 # create df to store the output of the named file 
 cleaned_file_names = []
 
@@ -72,8 +88,13 @@ selected_df = selected_df.sample(frac=1)
 # .isin() function checks if the first part (before the .) is in the second df, returns a boolian 
 matches = cleaned_names_df['Last name'].isin(selected_df['Last name'])
 matching_rows_df = cleaned_names_df[matches]
-print(matching_rows_df)
-print(matches)
+print(matching_rows_df) # gives result of the matches (what matched between the two df)
+print(matches) # gives true false statement for the files the matched 
+
+# add column in cleaned_names_df that says if name matched or not 
 
 # looping time 
-# loop 1 - checks if first name matches, if yes then file can be renamed based on the match 
+# loop 1 - checks if first names match, if yes then check if last names also match, if yes then rename 
+# loop 2 - if first name doesn't match, search with last name
+# loop 3 - if first name matches and last name does not match, place file into rename files
+# loop 4 - if first name and last name doesn't match place into rename file
