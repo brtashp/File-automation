@@ -17,6 +17,8 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 # creating a new folder name (for a new folder)
 new_folder_name = 'Redo Names'
 
+
+
 # creates the folder with the defined name in 'new_folder_name'
 #os.makedirs(new_folder_name)
 
@@ -68,7 +70,7 @@ for i in range(len(files_in_folder)):
 
     if merged_df2['UNumber'][i] != 'nan':
         old_file_name = merged_df2.loc[i, 'File Name']
-        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i]
+        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i] + ".pdf"
 
         old_file_path = os.path.join('Files', old_file_name)
         new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
