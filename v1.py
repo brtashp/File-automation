@@ -6,7 +6,7 @@ import os
 
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
-print(excel_df)
+#print(excel_df)
 
 folder_name = 'Files'
 # below function is used to get the absolute path to a folder (defines the path)
@@ -17,7 +17,7 @@ files_in_folder = os.listdir(folder_name)
 #print('\n' .join(files_in_folder)) # prints files vertically, not necessary tho
 
 selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case sensative 
-#print(selected_df)
+print(selected_df)
 
 # create df to store the output of the named file 
 cleaned_file_names = []
@@ -40,13 +40,14 @@ for file_name in files_in_folder:
             if name2 and "." in name2:
                 name2, _ = name2.rsplit(".", 1)
 
-            entry = {"Name1": name1, "Name2": name2}
+            entry = {"First name": name1, "Last name": name2}
             cleaned_file_names.append(entry)
 
         else:
             print("no after hyphen")
     else:
         print("No hyphen found")
+
 
 cleaned_names_df = pd.DataFrame(cleaned_file_names)
 
@@ -57,4 +58,17 @@ print(cleaned_names_df)
 
 # now that we have the file names 'searchable'
 # lets work on the part that compares to excel df so we can find the unumber and rename the file
+# using the match function 
+
+# note: selected_df is the excel df 
+#       cleaned_names_df is the file names we need to match with the excel names
+# if there is a match, we rename the file based on 'last, first unumber'
+# if there isnt a match, the file gets moved to a filder named "to rename", or something like that
+
+# .isin() function checks if the first part (before the .) is in the second df, returns a boolian 
+matches = cleaned_names_df['First name'].isin(selected_df['First name'])
+matching_rows_df = cleaned_names_df[matches]
+print(matching_rows_df)
+print(matches)
+
 
