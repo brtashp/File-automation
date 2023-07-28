@@ -24,14 +24,18 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 
 # renaming process 
 old_file_name = files_in_folder[0]
-print(f"old file name is: {old_file_name}")
+#print(f"old file name is: {old_file_name}")
 new_file_name = 'Whiskers, Cat UNumber.pdf'
 #print(f"new file name is{new_file_name}")
 
 # below function concatenates the file name to the file path, might be where we are having issues
+'''
+
 old_file_path = os.path.join('Files', old_file_name)
 #print( f"old file path is {old_file_path}")
+
 #new_file_path = os.path.join('Renamed Files', new_file_name)
+
 new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
 #print(f"new file path is {new_file_path}")
 
@@ -49,7 +53,9 @@ else:
 # renames the file that was assigned to old_file_name to the text that was assigned as new file name
 #os.rename(old_file_path, new_file_path)
 
-print(files_in_folder)
+'''
+
+#print(files_in_folder)
 # create df to store the output of the named file 
 cleaned_file_names = []
 
@@ -74,18 +80,12 @@ for file_name in files_in_folder:
             entry = {"First name": name1, "Last name": name2}
             cleaned_file_names.append(entry)
 
-        else:
-            print("no after hyphen")
-    else:
-        print("No hyphen found")
-
-
 cleaned_names_df = pd.DataFrame(cleaned_file_names)
 
 # adds original file name to compare (will be useful later when 
 # comparing to make sure correct file was renamed)
 cleaned_names_df['File Name'] = files_in_folder
-#print(cleaned_names_df)
+#print("\n", cleaned_names_df)
 
 # now that we have the file names 'searchable'
 # lets work on the part that compares to excel df so we can find the unumber and rename the file
@@ -97,19 +97,23 @@ cleaned_names_df['File Name'] = files_in_folder
 # if there isnt a match, the file gets moved to a filder named "to rename", or something like that
 
 # shuffle the excel dataframe:
-selected_df = selected_df.sample(frac=1)
-#print(selected_df)
+selected_df2 = selected_df.sample(frac=1)
+#print("\n ", selected_df2)
 
 # .isin() function checks if the first part (before the .) is in the second df, returns a boolian 
-matches = cleaned_names_df['Last name'].isin(selected_df['Last name'])
-matching_rows_df = cleaned_names_df[matches]
-print(matching_rows_df) # gives result of the matches (what matched between the two df)
-print(matches) # gives true false statement for the files the matched 
+#matches = cleaned_names_df['Last name'].isin(selected_df['Last name'])
+#matching_rows_df = cleaned_names_df[matches]
+#print(matching_rows_df) # gives result of the matches (what matched between the two df)
+#print("\n",matches) # gives true false statement for the files the matched 
 
-# add column in cleaned_names_df that says if name matched or not 
+# Merge df2 with df1 based on first_name and last_name
+merged_df = cleaned_names_df.merge(selected_df2, on=['First name', 'Last name'], how='inner')
 
-# looping time 
-# loop 1 - checks if first names match, if yes then check if last names also match, if yes then rename 
-# loop 2 - if first name doesn't match, search with last name
-# loop 3 - if first name matches and last name does not match, place file into rename files
-# loop 4 - if first name and last name doesn't match place into rename file
+# Drop the duplicate first_name and last_name column from df2
+merged_df.drop(['First name', 'Last name'], axis=1, inplace=True)
+
+# Rename the columns for clarity (optional)
+merged_df.rename(columns={'first_name_x': 'First name', 'last_name_x': 'Last name'}, inplace=True)
+
+# Output the final merged dataframe with unumber added to df2
+print(merged_df)
