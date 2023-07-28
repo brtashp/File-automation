@@ -2,28 +2,24 @@
 # import libraries
 import pandas as pd
 import os
-#import re # library not used anymore
 
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
-#print(excel_df)
 
 folder_name = 'Files'
 # below function is used to get the absolute path to a folder (defines the path)
 folder_path = os.path.abspath(folder_name)
-# files_in_folder is the list of files in the folder 
+# files_in_folder is the list of files in the folder to be renamed
 files_in_folder = os.listdir(folder_name)
 
-#print('\n' .join(files_in_folder)) # prints files vertically, not necessary tho
-
-# only puts the three columns we need into selected df
-# need to make a function for later code (unknown spread sheets ect) 
-# defines the new dataframe 
 selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case sensative 
-#print(selected_df)
 
-#print(files_in_folder)
-# create df to store the output of the named file 
+# creating a new folder name (for a new folder)
+new_folder_name = 'Redo Names'
+
+# creates the folder with the defined name in 'new_folder_name'
+#os.makedirs(new_folder_name)
+
 cleaned_file_names = []
 
 for file_name in files_in_folder:
@@ -55,16 +51,6 @@ cleaned_names_df['File Name'] = files_in_folder
 
 # shuffle the excel dataframe:
 selected_df2 = selected_df.sample(frac=1)
-#print("\n ", selected_df2)
-
-# Merge df2 with df1 based on first_name and last_name
-merged_df = cleaned_names_df.merge(selected_df2, on=['First name', 'Last name'], how='inner')
-
-# Drop the duplicate first_name and last_name column from df2
-merged_df.drop(['First name', 'Last name'], axis=1, inplace=True)
-
-# Output the final merged dataframe with unumber added to df2
-print(merged_df)
 
 # Perform a left merge to keep all rows from df2 while matching "First name" and "Last name" columns
 merged_df2 = cleaned_names_df.merge(selected_df2, on=['First name', 'Last name'], how='left')
@@ -72,8 +58,31 @@ merged_df2 = cleaned_names_df.merge(selected_df2, on=['First name', 'Last name']
 # Reorder the columns to have "First name", "Last name", "UNumber", and "File Names" at the front
 merged_df2 = merged_df2[['First name', 'Last name', 'UNumber', 'File Name']]
 
-# Output the final merged dataframe with "UNumber" added to df2
+merged_df2 = merged_df2.astype(str)
+
 print(merged_df2)
+# Output the final merged dataframe with "UNumber" added to df2
+#print(merged_df2)
+
+for i in range(len(files_in_folder)):
+
+    if merged_df2['UNumber'][i] != 'nan':
+        old_file_name = merged_df2.loc[i, 'File Name']
+        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i]
+
+        old_file_path = os.path.join('Files', old_file_name)
+        new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
+
+        if os.path.exists(old_file_path) and os.path.isfile(old_file_path):
+            os.rename(old_file_path, new_file_path)
+            print("File renamed successfully.")
+        else:
+            print("Original file not found or not accessible.")    
+    else: 
+        source_path = os.path.join(folder_name, merged_df2.loc[i, 'File Name'])
+        target_path = os.path.join(new_folder_name, merged_df2.loc[i, 'File Name'])
+        os.replace(source_path, target_path)
+
 
 '''
 # renaming process 
