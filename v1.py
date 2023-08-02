@@ -82,30 +82,3 @@ for i in range(len(files_in_folder)):
         source_path = os.path.join(folder_name, merged_df2.loc[i, 'File Name'])
         target_path = os.path.join(new_folder_name, merged_df2.loc[i, 'File Name'])
         os.replace(source_path, target_path)
-
-
-'''
-# renaming process 
-old_file_name = files_in_folder[0]
-#print(f"old file name is: {old_file_name}")
-new_file_name = 'Whiskers, Cat UNumber.pdf'
-#print(f"new file name is{new_file_name}")
-
-old_file_path = os.path.join('Files', old_file_name)
-#print( f"old file path is {old_file_path}")
-
-new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
-#print(f"new file path is {new_file_path}")
-
-if os.path.exists(old_file_path) and os.path.isfile(old_file_path):
-    # Rename the file
-    # when renaming the file, you put the path to the old file (with name) and path to new file (with name)
-    # NOT using text file names
-    os.rename(old_file_path, new_file_path)
-    print("File renamed successfully.")
-else:
-    print("Original file not found or not accessible.")
-
-# renames the file that was assigned to old_file_name to the text that was assigned as new file name
-#os.rename(old_file_path, new_file_path)
-'''
