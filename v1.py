@@ -22,6 +22,7 @@ new_folder_name = 'Redo Names'
 
 cleaned_file_names = []
 
+'''
 for file_name in files_in_folder:
     parts = file_name.split(' - ')
 
@@ -43,6 +44,36 @@ for file_name in files_in_folder:
             entry = {"First name": name1, "Last name": name2}
             cleaned_file_names.append(entry)
 
+'''
+# test the following to see if it works, if not then use the above commented 
+cleaned_file_names = []
+
+for file_name in files_in_folder:
+    parts = file_name.split(' - ')
+
+    if len(parts) == 2:
+        names_text = parts[1].strip()
+        names = names_text.split()
+
+        if len(names) >= 1:
+            name1 = names[0]
+            name2 = names[1] if len(names) >= 2 else None
+
+            if "." in name1:
+                name1, file_type = name1.rsplit(".", 1)
+            else:
+                file_type = None
+
+            if name2 and "." in name2:
+                name2, _ = name2.rsplit(".", 1)
+
+            entry = {
+                "First name": name1,
+                "Last name": name2,
+                "File type": file_type
+            }
+            cleaned_file_names.append(entry)
+
 cleaned_names_df = pd.DataFrame(cleaned_file_names)
 
 # adds original file name to compare (will be useful later when 
@@ -56,7 +87,7 @@ selected_df2 = selected_df.sample(frac=1)
 merged_df2 = cleaned_names_df.merge(selected_df2, on=['First name', 'Last name'], how='left')
 
 # Reorder the columns to have "First name", "Last name", "UNumber", and "File Names" at the front
-merged_df2 = merged_df2[['First name', 'Last name', 'UNumber', 'File Name']]
+#merged_df2 = merged_df2[['First name', 'Last name', 'UNumber', 'File Name']] # why was this necessary?????
 
 merged_df2 = merged_df2.astype(str)
 
@@ -68,7 +99,7 @@ for i in range(len(files_in_folder)):
 
     if merged_df2['UNumber'][i] != 'nan':
         old_file_name = merged_df2.loc[i, 'File Name']
-        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i]
+        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i] + "." + merged_df2['File type']
 
         old_file_path = os.path.join('Files', old_file_name)
         new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
