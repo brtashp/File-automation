@@ -1,16 +1,52 @@
-# idea of this code is to find which files havent been checked, renamed and saved into the reserves
-# will need to combine all the excel files from the downloaded version (from the reserves) with the massive file to find the 'missing' unsaved files 
-
 import pandas as pd
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
 
-# asks file name
-file1_path = input("Type the name of entire orientation file (including the file type): ")
-file2_path = input("Type the name of the saved orientation file (including the file type): ")
+def process_files():
+    file1_path = file1_entry.get()
+    file2_path = file2_entry.get()
 
-df1 = pd.read_excel(file1_path)
-df2 = pd.read_excel(file2_path)
+    try:
+        df1 = pd.read_excel(file1_path)
+        df2 = pd.read_excel(file2_path)
 
-merged = pd.merge(df1, df2, how='outer', indicator=True)
-missing_inputs = merged[merged['_merge'] == 'left_only']
+        merged = pd.merge(df1, df2, how='outer', indicator=True)
+        missing_inputs = merged[merged['_merge'] == 'left_only']
 
-missing_inputs.to_excel("missing_inputs.xlsx", index=False)
+        output_file = "missing_inputs.xlsx"
+        missing_inputs.to_excel(output_file, index=False)
+        messagebox.showinfo("Success", f"Missing inputs saved to {output_file}")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+# Create the main window
+root = tk.Tk()
+root.title("Missing Inputs Checker")
+
+# File 1 Label and Entry
+file1_label = tk.Label(root, text="Type the name of entire orientation file:")
+file1_label.pack()
+file1_entry = tk.Entry(root)
+file1_entry.pack()
+
+# File 1 Browse Button
+file1_browse_button = tk.Button(root, text="Browse", command=lambda: file1_entry.insert(tk.END, filedialog.askopenfilename()))
+file1_browse_button.pack()
+
+# File 2 Label and Entry
+file2_label = tk.Label(root, text="Type the name of the saved orientation file:")
+file2_label.pack()
+file2_entry = tk.Entry(root)
+file2_entry.pack()
+
+# File 2 Browse Button
+file2_browse_button = tk.Button(root, text="Browse", command=lambda: file2_entry.insert(tk.END, filedialog.askopenfilename()))
+file2_browse_button.pack()
+
+# Process Button
+process_button = tk.Button(root, text="Process Files", command=process_files)
+process_button.pack()
+
+# Start the GUI event loop
+root.mainloop()
