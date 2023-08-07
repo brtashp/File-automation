@@ -6,6 +6,26 @@ import os
 # create dataframe from excel sheet
 excel_df = pd.read_excel('Test.xlsx')
 
+# cleaning excel data (especially the U numbers)
+def add_U_if_missing(value):
+    if isinstance(value, (str, int)):
+        str_value = str(value)
+        if not str_value.startswith('U'):
+            return 'U' + str_value
+    return value
+
+def remove_dashes(value):
+    if isinstance(value, (str, int)):
+        return value.replace('-', '')
+    return value
+
+# Apply the functions to the DataFrame column
+excel_df['UNumber'] = excel_df['UNumber'].apply(add_U_if_missing)
+excel_df['UNumber'] = excel_df['UNumber'].apply(remove_dashes)
+
+# Print the modified DataFrame
+print(excel_df)
+
 folder_name = 'Files'
 # below function is used to get the absolute path to a folder (defines the path)
 folder_path = os.path.abspath(folder_name)
@@ -16,8 +36,6 @@ selected_df = excel_df[['First name', 'Last name', 'UNumber']] #python is case s
 
 # creating a new folder name (for a new folder)
 new_folder_name = 'Redo Names'
-
-
 
 # creates the folder with the defined name in 'new_folder_name'
 #os.makedirs(new_folder_name)
@@ -70,7 +88,7 @@ for i in range(len(files_in_folder)):
 
     if merged_df2['UNumber'][i] != 'nan':
         old_file_name = merged_df2.loc[i, 'File Name']
-        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i] + ".pdf"
+        new_file_name = merged_df2['Last name'][i] + ", " + merged_df2['First name'][i] + " " + merged_df2['UNumber'][i]
 
         old_file_path = os.path.join('Files', old_file_name)
         new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
@@ -84,30 +102,3 @@ for i in range(len(files_in_folder)):
         source_path = os.path.join(folder_name, merged_df2.loc[i, 'File Name'])
         target_path = os.path.join(new_folder_name, merged_df2.loc[i, 'File Name'])
         os.replace(source_path, target_path)
-
-
-'''
-# renaming process 
-old_file_name = files_in_folder[0]
-#print(f"old file name is: {old_file_name}")
-new_file_name = 'Whiskers, Cat UNumber.pdf'
-#print(f"new file name is{new_file_name}")
-
-old_file_path = os.path.join('Files', old_file_name)
-#print( f"old file path is {old_file_path}")
-
-new_file_path = os.path.join(os.path.dirname(old_file_path), new_file_name)
-#print(f"new file path is {new_file_path}")
-
-if os.path.exists(old_file_path) and os.path.isfile(old_file_path):
-    # Rename the file
-    # when renaming the file, you put the path to the old file (with name) and path to new file (with name)
-    # NOT using text file names
-    os.rename(old_file_path, new_file_path)
-    print("File renamed successfully.")
-else:
-    print("Original file not found or not accessible.")
-
-# renames the file that was assigned to old_file_name to the text that was assigned as new file name
-#os.rename(old_file_path, new_file_path)
-'''
