@@ -7,6 +7,4 @@ This code will take the original file names of the files that need to be renamed
 
 If there is not a match or the file is named incorrectly, it is then stored in a created folder for a user input to rename the files. 
 
-This code only works for .pdf file types
-
-Future plans are to have user inputs for file location names, and double check analysis if a there are two files with the same first name and missing a last name or vice versa, and implement the use of multiple file types. 
+Within this repository are test files used to ensure the code works prior to using with real student IDs
